@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan semua data mahasiswa
      */
     public function index()
     {
@@ -16,7 +17,7 @@ class MahasiswaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form tambah mahasiswa
      */
     public function create()
     {
@@ -24,50 +25,52 @@ class MahasiswaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data mahasiswa
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
-        'nim' => 'required|unique:mahasiswas,nim',
-        'nama' => 'required',
-        'kelas' => 'required',
-        'matakuliah' => 'required'
-    ]);
-            Mahasiswa::create($request->all());
-            return redirect()->route('mahasiswa.index');
-    }
+            'nim' => 'required|unique:mahasiswas,nim',
+            'nama' => 'required',
+            'kelas' => 'required',
+            'matakuliah' => 'required'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        Mahasiswa::create($request->all());
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($nim)
-    {
-    $mahasiswa = Mahasiswa::findOrFail($nim);
-    return view('mahasiswa.edit', compact('mahasiswa'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $mahasiswa = Mahasiswa::findOrFail($nim);
-        $mahasiswa->update($request->all());
         return redirect()->route('mahasiswa.index');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menampilkan form edit mahasiswa
      */
-    public function destroy(string $id)
+    public function edit($nim)
+    {
+        $mahasiswa = Mahasiswa::findOrFail($nim);
+        return view('mahasiswa.edit', compact('mahasiswa'));
+    }
+
+    /**
+     * Update data mahasiswa
+     */
+    public function update(Request $request, $nim)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'kelas' => 'required',
+            'matakuliah' => 'required'
+        ]);
+
+        $mahasiswa = Mahasiswa::findOrFail($nim);
+        $mahasiswa->update($request->all());
+
+        return redirect()->route('mahasiswa.index');
+    }
+
+    /**
+     * Menghapus data mahasiswa
+     */
+    public function destroy($nim)
     {
         Mahasiswa::destroy($nim);
         return redirect()->route('mahasiswa.index');
