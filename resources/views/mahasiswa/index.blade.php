@@ -1,78 +1,67 @@
-{{-- resources/views/mahasiswa/index.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4>Data Mahasiswa</h4>
-                    <a href="{{ route('mahasiswa.create') }}" class="btn btn-primary">Tambah Mahasiswa</a>
-                </div>
-                <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>NIM</th>
-                                    <th>Nama</th>
-                                    <th>Kelas</th>
-                                    <th>Matakuliah</th>
-                                    <th width="150">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($mahasiswas as $mhs)
-                                <tr>
-                                    <td>{{ $mhs->nim }}</td>
-                                    <td>{{ $mhs->nama }}</td>
-                                    <td>{{ $mhs->kelas }}</td>
-                                    <td>
-                                        @if(is_array($mhs->matakuliah) || is_object($mhs->matakuliah))
-                                            @foreach($mhs->matakuliah as $mk)
-                                                <span class="badge bg-info">{{ $mk }}</span>
-                                            @endforeach
-                                        @else
-                                            {{ $mhs->matakuliah }}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="{{ route('mahasiswa.edit', $mhs->nim) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('mahasiswa.destroy', $mhs->nim) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="5" class="text-center">Tidak ada data mahasiswa</td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    {{-- Pagination --}}
-                    @if(method_exists($mahasiswas, 'links'))
-                        <div class="d-flex justify-content-end mt-3">
-                            {{ $mahasiswa->links() }}
-                        </div>
-                    @endif
-                </div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Data Mahasiswa</h3>
+        <a href="{{ route('mahasiswa.create') }}" class="btn btn-primary">
+            + Tambah Mahasiswa
+        </a>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>NIM</th>
+                        <th>Nama</th>
+                        <th>Kelas</th>
+                        <th>Mata Kuliah</th>
+                        <th width="150">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($mahasiswa as $mhs)
+                    <tr>
+                        <td>{{ $mhs->nim }}</td>
+                        <td>{{ $mhs->nama }}</td>
+                        <td>{{ $mhs->kelas }}</td>
+                        <td>
+                            @foreach($mhs->matakuliahs as $mk)
+                                {{ $mk->nama_mk }} <br>
+                            @endforeach
+                        </td>
+                        <td>
+                            <!-- PERBAIKAN DI SINI -->
+                            <a href="{{ route('mahasiswa.edit', $mhs) }}" 
+                               class="btn btn-warning btn-sm">
+                               Edit
+                            </a>
+
+                            <form action="{{ route('mahasiswa.destroy', $mhs) }}" 
+                                  method="POST" 
+                                  class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm">
+                                    Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
+
 </div>
 @endsection
