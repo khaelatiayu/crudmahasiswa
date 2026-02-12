@@ -30,7 +30,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($mahasiswa as $mhs)
+                                @forelse($mahasiswas as $mhs)
                                 <tr>
                                     <td>{{ $mhs->nim }}</td>
                                     <td>{{ $mhs->nama }}</td>
@@ -46,8 +46,8 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('mahasiswa.edit', $mhs->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('mahasiswa.destroy', $mhs->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                            <a href="{{ route('mahasiswa.edit', $mhs->nim) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            <form action="{{ route('mahasiswa.destroy', $mhs->nim) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
@@ -65,7 +65,7 @@
                     </div>
                     
                     {{-- Pagination --}}
-                    @if(method_exists($mahasiswa, 'links'))
+                    @if(method_exists($mahasiswas, 'links'))
                         <div class="d-flex justify-content-end mt-3">
                             {{ $mahasiswa->links() }}
                         </div>
