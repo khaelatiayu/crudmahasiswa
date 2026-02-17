@@ -24,24 +24,26 @@
                         <th>Kode MK</th>
                         <th>Nama MK</th>
                         <th>SKS</th>
-                        <th>Semester</th>
                         <th width="150">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($matakuliahs as $mk)
+                    @forelse($matakuliahs as $mk)
                     <tr>
                         <td>{{ $mk->kode_mk }}</td>
-                        <td>{{ $mk->nama_mk }}</td>
-                        <td>{{ $mk->sks }}</td>
-                        <td>{{ $mk->semester }}</td>
                         <td>
-                            <a href="{{ route('matakuliah.edit',$mk) }}" 
-                                class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ route('matakuliah.show', $mk->id) }}">
+                                {{ $mk->nama_mk }}
+                            </a>
+                        </td>
+                        <td>{{ $mk->sks }}</td>
+                        <td>
+                            <a href="{{ route('matakuliah.edit',$mk->id) }}" 
+                               class="btn btn-warning btn-sm">Edit</a>
 
-                            <form action="{{ route('matakuliah.destroy',$mk) }}" 
-                                method="POST" 
-                                class="d-inline">
+                            <form action="{{ route('matakuliah.destroy',$mk->id) }}" 
+                                  method="POST" 
+                                  class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm">
@@ -50,7 +52,13 @@
                             </form>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            Data mata kuliah belum tersedia
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

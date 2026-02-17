@@ -10,67 +10,36 @@ class MahasiswaController extends Controller
 {
     public function index()
     {
-        $mahasiswa = \App\Models\Mahasiswa::with('matakuliahs')->get();
-
+        $mahasiswa = \App\Models\Mahasiswa::with('matakuliah')->get();
         return view('mahasiswa.index', compact('mahasiswa'));
     }
 
     public function create()
     {
-        $matakuliahs = Matakuliah::all();
+        $matakuliahs = \App\Models\Matakuliah::all();
         return view('mahasiswa.create', compact('matakuliahs'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nim' => 'required|unique:mahasiswas,nim',
-            'nama' => 'required',
-            'kelas' => 'required',
-            'matakuliah' => 'required|array'
-        ]);
-
-        $mahasiswa = Mahasiswa::create([
-            'nim' => $request->nim,
-            'nama' => $request->nama,
-            'kelas' => $request->kelas
-        ]);
-
-        // Simpan relasi
-        $mahasiswa->matakuliahs()->attach($request->matakuliah);
-
-        return redirect()->route('mahasiswa.index')
-            ->with('success', 'Data mahasiswa berhasil ditambahkan');
+        Mahasiswa::create($request->all());
+        return redirect()->route('mahasiswa.index');
     }
 
     public function edit($nim)
     {
         $mahasiswa = Mahasiswa::findOrFail($nim);
-        $matakuliahs = Matakuliah::all();
+        $matakuliahs = \App\Models\Matakuliah::all();
 
         return view('mahasiswa.edit', compact('mahasiswa', 'matakuliahs'));
     }
 
     public function update(Request $request, $nim)
     {
-        $request->validate([
-            'nama' => 'required',
-            'kelas' => 'required',
-            'matakuliah' => 'required|array'
-        ]);
-
         $mahasiswa = Mahasiswa::findOrFail($nim);
+        $mahasiswa->update($request->all());
 
-        $mahasiswa->update([
-            'nama' => $request->nama,
-            'kelas' => $request->kelas
-        ]);
-
-        // Update relasi pivot
-        $mahasiswa->matakuliahs()->sync($request->matakuliah);
-
-        return redirect()->route('mahasiswa.index')
-            ->with('success', 'Data mahasiswa berhasil diperbarui');
+        return redirect()->route('mahasiswa.index');
     }
 
     public function destroy($nim)

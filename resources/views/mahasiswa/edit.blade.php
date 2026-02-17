@@ -52,32 +52,18 @@
                            required>
                 </div>
 
-                {{-- Mata Kuliah (Many to Many) --}}
-                <div class="mb-3">
-                    <label class="form-label">Mata Kuliah</label>
-
-                    @php
-                        $selectedMatkul = old(
-                            'matakuliah',
-                            $mahasiswa->matakuliahs->pluck('kode_mk')->toArray()
-                        );
-                    @endphp
-
-                    @foreach($matakuliahs as $mk)
-                        <div class="form-check">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="matakuliah[]"
-                                   value="{{ $mk->kode_mk }}"
-                                   {{ in_array($mk->kode_mk, $selectedMatkul) ? 'checked' : '' }}>
-
-                            <label class="form-check-label">
-                                {{ $mk->nama_mk }} ({{ $mk->sks }} SKS - Semester {{ $mk->semester }})
-                            </label>
-                        </div>
-                    @endforeach
+                <div class="form-group">
+                    <label>Mata Kuliah</label>
+                    <select name="matakuliah_id" class="form-control" required>
+                        @foreach($matakuliahs as $mk)
+                            <option value="{{ $mk->id }}"
+                                {{ $mahasiswa->matakuliah_id == $mk->id ? 'selected' : '' }}>
+                                {{ $mk->nama_mk }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
-
+                
                 {{-- Tombol --}}
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary">

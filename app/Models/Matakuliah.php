@@ -3,29 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Mahasiswa; // 
 
 class Matakuliah extends Model
 {
-    protected $primaryKey = 'kode_mk';
-    public $incrementing = false;
-    protected $keyType = 'string';
+    protected $table = 'matakuliahs';
 
     protected $fillable = [
         'kode_mk',
         'nama_mk',
-        'sks',
-        'semester'
+        'sks'
     ];
 
-    // relasi Many to Many
+    // 1 Matakuliah hasMany Mahasiswa
     public function mahasiswas()
     {
-        return $this->belongsToMany(
-            Mahasiswa::class,
-            'mahasiswa_matakuliah', // tabel pivot
-            'kode_mk',              // foreign key matakuliah di pivot
-            'nim'                   // foreign key mahasiswa di pivot
-        );
+        return $this->hasMany(Mahasiswa::class, 'matakuliah_id');
     }
 }

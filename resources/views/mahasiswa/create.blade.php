@@ -33,24 +33,22 @@
         <input type="text" name="kelas" class="form-control" required>
     </div>
 
-    {{-- 🔥 REVISI BAGIAN INI --}}
     <div class="mb-3">
-        <label>Pilih Mata Kuliah</label>
-
-        @foreach($matakuliahs as $mk)
-            <div class="form-check">
-                <input class="form-check-input"
-                       type="checkbox"
-                       name="matakuliah[]"
-                       value="{{ $mk->kode_mk }}">
-
-                <label class="form-check-label">
-                    {{ $mk->nama_mk }} ({{ $mk->sks }} SKS)
-                </label>
-            </div>
-        @endforeach
+        <label>Semester</label>
+        <input type="text" name="semester" class="form-control" required>
     </div>
 
+    <div class="form-group">
+        <label>Mata Kuliah</label>
+        <select name="matakuliah_id" class="form-control" required>
+            <option value="">-- Pilih Mata Kuliah --</option>
+            @foreach($matakuliahs as $mk)
+                <option value="{{ $mk->id }}">
+                    {{ $mk->nama_mk }}
+                </option>
+            @endforeach
+        </select>
+    </div>
     <button type="submit" class="btn btn-success">Simpan</button>
     <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">Kembali</a>
 

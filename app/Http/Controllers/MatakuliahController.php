@@ -61,4 +61,10 @@ class MatakuliahController extends Controller
         return redirect()->route('matakuliah.index')
             ->with('success', 'Data mata kuliah berhasil dihapus');
     }
+
+    public function show($id)
+    {
+    $matakuliah = Matakuliah::with('mahasiswas')->findOrFail($id);
+    return view('matakuliah.show', compact('matakuliah'));
+    }
 }

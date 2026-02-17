@@ -15,7 +15,12 @@ return new class extends Migration
             $table->string('nim')->primary();
             $table->string('nama');
             $table->string('kelas');
-            $table->string('matakuliah');
+            $table->integer('semester');
+
+            $table->foreignId('matakuliah_id')
+                ->constrained('matakuliahs')
+                ->cascadeOnDelete();
+
             $table->timestamps();
         });
     }

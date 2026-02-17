@@ -24,6 +24,7 @@
                         <th>NIM</th>
                         <th>Nama</th>
                         <th>Kelas</th>
+                        <th>Semester</th>
                         <th>Mata Kuliah</th>
                         <th width="150">Aksi</th>
                     </tr>
@@ -34,19 +35,17 @@
                         <td>{{ $mhs->nim }}</td>
                         <td>{{ $mhs->nama }}</td>
                         <td>{{ $mhs->kelas }}</td>
+                        <td>{{ $mhs->semester }}</td>
                         <td>
-                            @foreach($mhs->matakuliahs as $mk)
-                                {{ $mk->nama_mk }} <br>
-                            @endforeach
+                            {{ $mhs->matakuliah ? $mhs->matakuliah->nama_mk : '-' }}
                         </td>
                         <td>
-                            <!-- PERBAIKAN DI SINI -->
-                            <a href="{{ route('mahasiswa.edit', $mhs) }}" 
+                            <a href="{{ route('mahasiswa.edit', $mhs->nim) }}" 
                                class="btn btn-warning btn-sm">
                                Edit
                             </a>
 
-                            <form action="{{ route('mahasiswa.destroy', $mhs) }}" 
+                            <form action="{{ route('mahasiswa.destroy', $mhs->nim) }}" 
                                   method="POST" 
                                   class="d-inline">
                                 @csrf
