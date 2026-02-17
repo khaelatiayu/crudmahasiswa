@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Mahasiswa extends Model
 {
+    use HasFactory;
+
     protected $table = 'mahasiswas';
     protected $primaryKey = 'nim';
     public $incrementing = false;
@@ -16,12 +19,17 @@ class Mahasiswa extends Model
         'nama',
         'kelas',
         'semester',
-        'matakuliah_id'
+        'matakuliah_id',
+        'user_id'
     ];
 
-    // 1 Mahasiswa belongsTo 1 Matakuliah
     public function matakuliah()
     {
-        return $this->belongsTo(Matakuliah::class, 'matakuliah_id');
+        return $this->belongsTo(Matakuliah::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
